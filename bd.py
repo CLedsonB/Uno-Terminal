@@ -4,6 +4,16 @@ import random as rd
 from random import randrange as rand
 clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
+Nconfig = {
+'N* de Jogadores' : 3,
+'N* de cartas' : 5,
+'Ver Cartas' : 's',
+'Tempo para exibir cartas' : 5,
+'Metodo de organizacao de cartas' : 1,
+'Icone Carregamento' : '@',
+'Ciclos Carregamento' : 3
+}
+
 opcConfig = [
 'N* de Jogadores',
 'N* de cartas',
