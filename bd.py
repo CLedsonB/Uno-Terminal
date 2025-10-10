@@ -6,8 +6,8 @@ from random import randrange as rand
 clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
 configPadrao = {
-'N* de Jogadores' : 3,
-'N* de cartas' : 15,
+'N* de Jogadores' : 5,
+'N* de cartas' : 3,
 'Ver Cartas' : 's',
 'Tempo para exibir cartas' : 5,
 'Metodo de organizacao de cartas' : 1,
@@ -167,7 +167,7 @@ def resetarBaralho():
 			if i == 0:
 				cartas = cartas + [poderes[i] + cores[j]] * 2	 # +2A * 2
 			if i == 1 or i == 2:
-				cartas = cartas + [poderes[i] + cores[j]] * 3	 # +4A / ><
+				cartas = cartas + [poderes[i] + cores[j]]	 # +4A / ><
 			if i == 3:
 				cartas = cartas + [poderes[i] + ' ' + cores[j]] 	 # @
 			if i == 4 and j == 0:
@@ -217,7 +217,6 @@ def telaJogo():
 		clear()
 
 		if config[listConfig[2]] == 's':
-			print(config[listConfig[0]],' - ',vez+1,' = ', (config[listConfig[0]])-vez-1)
 			print(exbJogo)
 			print(aux)
 		else:
@@ -302,6 +301,8 @@ def telaJogo():
 
 		if bloq == False:
 			vez += 1
+			if vez >= config[listConfig[0]]:
+				vez = 0
 		else:
 			bloq = False
 
