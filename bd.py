@@ -7,7 +7,7 @@ clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 configPadrao = {
 'N* de Jogadores' : 3,
 'N* de cartas' : 5,
-'Ver Cartas' : 'n',
+'Ver Cartas' : 's',
 'Tempo para exibir cartas' : 5,
 'Metodo de organizacao de cartas' : 1,
 'Icone Carregamento' : '+',
@@ -310,5 +310,5 @@ def telaJogo():
 			vez -= 1
 		elif vez+1  > config[listConfig[0]]:
 			vez = 0
-		t.sleep(1.5)
+		t.sleep(1.1)
 
