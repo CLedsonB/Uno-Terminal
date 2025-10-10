@@ -1,4 +1,5 @@
 import os
+import copy
 import time as t
 import random as rd
 from random import randrange as rand
@@ -6,18 +7,17 @@ clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
 configPadrao = {
 'N* de Jogadores' : 3,
-'N* de cartas' : 5,
-'Ver Cartas' : 'n',
+'N* de cartas' : 15,
+'Ver Cartas' : 's',
 'Tempo para exibir cartas' : 5,
 'Metodo de organizacao de cartas' : 1,
-'Icone Carregamento' : '+',
+'Icone Carregamento' : '@',
 'Ciclos Carregamento' : 2
 }
 
-config = configPadrao
+config = copy.deepcopy(configPadrao)
 
 listConfig = []
-
 for key in config.keys():
 	listConfig.append(key)
 
@@ -167,9 +167,9 @@ def resetarBaralho():
 			if i == 0:
 				cartas = cartas + [poderes[i] + cores[j]] * 2	 # +2A * 2
 			if i == 1 or i == 2:
-				cartas = cartas + [poderes[i] + cores[j]]	 # +4A / ><
+				cartas = cartas + [poderes[i] + cores[j]] * 3	 # +4A / ><
 			if i == 3:
-				cartas = cartas + [poderes[i] + ' ' + cores[j]]	 # @
+				cartas = cartas + [poderes[i] + ' ' + cores[j]] 	 # @
 			if i == 4 and j == 0:
 				cartas.append(poderes[i])			 # COR
 	rd.shuffle(cartas)
@@ -188,9 +188,8 @@ def distribuirBaralho():
 
 def telaJogo():
 	global cartas, cartasJogador, nomeJogador, config, listConfig
-	bloq = False
-	invt = False
 	vez = 0
+	bloq = False
 	cartaInicial = cartas.pop()
 
 	while True:
@@ -218,6 +217,7 @@ def telaJogo():
 		clear()
 
 		if config[listConfig[2]] == 's':
+			print(config[listConfig[0]],' - ',vez+1,' = ', (config[listConfig[0]])-vez-1)
 			print(exbJogo)
 			print(aux)
 		else:
@@ -237,7 +237,7 @@ def telaJogo():
 		nCartas = len(cartasJogador[vez])-1
 		print('\n')
 
-		if jogada > len(cartasJogador[vez]):
+		if jogada > len(cartasJogador[vez]) and jogada < -1:
 			print('\n Numero incorreto !!!')
 			vez -= 1
 
@@ -251,52 +251,47 @@ def telaJogo():
 				vez -= 1
 			else:
 				print(' O montante esta vazio... passarei a sua vez de jogar')
-
-		elif carta.count('>') == 1:	# acao da carta inverter sentido
+		else:
+			# acao padrao das cartas
 			cartas.insert(0,cartaInicial)
 			cartaInicial = cartasJogador[vez].pop(jogada-1)
 
-			print(' ',nomeJogador[vez],' inverteu o sentido do jogo !!!')
-			nomeJogador.reverse()
-			cartasJogador.reverse()
-			if invt == False:
-				vez -= 1
-			else:
-				vez -= 2
+			if carta.count('>') == 1:	# acao da carta inverter sentido
+				print(' ',nomeJogador[vez],' inverteu o sentido do jogo !!!')
 
-		elif carta.count('+') == 1:	# acao das cartas de soma
-			cartas.insert(0,cartaInicial)
-			cartaInicial = cartasJogador[vez].pop(jogada-1)
+				playerVez = nomeJogador[vez]
+				nomeJogador.reverse()
+				cartasJogador.reverse()
+				vez = nomeJogador.index(playerVez)
 
-			if carta.count('2') == 1:	# acao da carta +2
-				quant = 2
-			elif carta.count('4') == 1:	# acao da carta +4
-				quant = 4
-			for i in range(quant):
-				aux = cartas.pop()
+			elif carta.count('+') == 1:	# acao das cartas de soma
+				if carta.count('2') == 1:	# acao da carta +2
+					quant = 2
+				elif carta.count('4') == 1:	# acao da carta +4
+					quant = 4
+				for i in range(quant):
+					aux = cartas.pop()
+					try:
+						cartasJogador[vez+1].append(aux)
+					except:
+						cartasJogador[0].append(aux)
 				try:
-					cartasJogador[vez+1].append(aux)
+					print(f' {nomeJogador[vez+1]} ganhou {quant} cartas !!!')
 				except:
-					cartasJogador[0].append(aux)
-			try:
-				print(f' {nomeJogador[vez+1]} ganhou {quant} cartas !!!')
-			except:
-				print(f' {nomeJogador[0]} ganhou {quant} cartas !!!')
+					print(f' {nomeJogador[0]} ganhou {quant} cartas !!!')
 
-		elif carta.count('@') == 1:	# acao da carta bloqueio
-			cartas.insert(0,cartaInicial)
-			cartaInicial = cartasJogador[vez].pop(jogada-1)
-
-			try:
-				print(f' {nomeJogador[vez+1]} foi bloqueado !!!')
-			except:
-				print(f' {nomeJogador[0]} foi bloqueado !!!')
-				bloq == True
-			vez += 1
-		else:	# acao das demais cartas
-			cartas.insert(0,cartaInicial)
-			cartaInicial = cartasJogador[vez].pop(jogada-1)
-
+			elif carta.count('@') == 1:	# acao da carta bloqueio
+				bloq = True
+				numJ = config[listConfig[0]]
+				if numJ - vez-1 == 0: # 3 - 2+1 == 0 ultimo
+					print(f' {nomeJogador[0]} foi bloqueado !!!')
+					vez = 1
+				elif numJ - vez-1 == 1: # 3 - 1+1 == 1 anteultimo
+					print(f' {nomeJogador[-1]} foi bloqueado !!!')
+					vez = 0
+				elif numJ - vez-1 > 1: # 3 - 0+1 == 2 normal
+					print(f' {nomeJogador[vez+1]} foi bloqueado !!!')
+					vez += 2
 
 		if nCartas == 0:	#testar condicao de vitoria
 			print(f'\n {nomeJogador[vez]} venceu o jogo !!!')
@@ -304,11 +299,23 @@ def telaJogo():
 			cartasJogador.pop(vez)
 			if len(nomeJogador) == 0:
 				break
-		vez += 1
 
-		if bloq == True:
-			vez -= 1
-		elif vez+1  > config[listConfig[0]]:
-			vez = 0
+		if bloq == False:
+			vez += 1
+		else:
+			bloq = False
+
 		t.sleep(1.5)
 
+def creditos():
+	mov = ['/','-','\\','|']
+
+	for i in range(5):
+		for j in range(len(mov)):
+			clear()
+			print('\n\n\t',mov[j])
+			t.sleep(0.05)
+
+	clear()
+	print(f'\n\n\t2025 @ - CLedsonB')
+	input()
