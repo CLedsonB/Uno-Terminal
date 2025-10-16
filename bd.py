@@ -202,7 +202,7 @@ def telaJogo():
   Montante : {len(cartas)}
 
 	{cartaInicial}
-
+-- {vez} --
 
   Vez do jogador : {nomeJogador[vez]}
 '''
@@ -296,6 +296,7 @@ def telaJogo():
 			print(f'\n {nomeJogador[vez]} venceu o jogo !!!')
 			nomeJogador.pop(vez)
 			cartasJogador.pop(vez)
+			vez -= 1
 			if len(nomeJogador) == 0:
 				break
 
@@ -318,5 +319,22 @@ def creditos():
 			t.sleep(0.05)
 
 	clear()
-	print(f'\n\n\t2025 @ - CLedsonB')
+	print(f'''
+             \|||/
+             (O O)
+     .---oOO--(_)------.
+     |                 |
+     |     CREDITOS    |
+     |                 |
+     |      Autor      |
+     |    CLedsonB     |
+     |     @ 2025      |
+     |                 |
+     `-----------OOo---`
+           |  |  |
+           |  |  |
+           |__|__|
+           /_`Y`_\\
+          (__/ \__)
+''')
 	input()
