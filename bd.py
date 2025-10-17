@@ -64,11 +64,12 @@ def menuInicial():
 	[3]. Creditos
 	[4]. Sair
 ''')
-	#	try:
-		opc = int(input(' ~> '))
-
-		if opc == 1:
+		try:
 			cartas = resetarBaralho()
+			opc = int(input(' ~> '))
+		except:
+			opc = 0
+		if opc == 1:
 			cartas, cartasJogador = distribuirBaralho()
 			carregamento()
 			telaJogo()
@@ -79,12 +80,11 @@ def menuInicial():
 		elif opc == 4:
 			exit()
 		else:
-			print('\n Numero invalido')
-	#	except:
-			print('\n Caractere invalido2')
+			print('\n Caractere invalido')
+			t.sleep(1)
 
 def menuConfiguracao():
-	global config, configPadrao, nomeJogador, listConfig
+	global config, configPadrao, nomeJogador, listConfig, cartas
 
 	while True:
 		clear()
@@ -97,21 +97,42 @@ def menuConfiguracao():
 		print(f'\t[{i+1}].  Redefinir configuracoes')
 		print(f'\t[{i+2}].  Sair e Salvar')
 
+
+
 		try:
 			opc = int(input(' ~> '))
 
 			if opc == 1:
 				print('\n Digite o numero de jogadores\n')
 				print(f' Valor atual : {config[listConfig[opc-1]]} -->> {nomeJogador}\n')
-				config[listConfig[opc-1]] = int(input(' ~> '))
-				nomeJogador = []
-				for i in range(config[listConfig[opc-1]]):
-					nome = input(f'\n Insira o nome do jogador {i+1}\n ~> ')
-					nomeJogador.append(nome)
+
+				aux = int(input(' ~> '))
+
+				nCartasJogo = len(cartas)
+				nCartasNecess = aux * config[listConfig[1]]   # nJogador * nCartas
+
+				if nCartasNecess > nCartasJogo:
+					print('\n Configuracao impossivel !!!')
+				else:
+					nomeJogador = []
+					config[listConfig[opc-1]] = aux
+
+					for i in range(config[listConfig[opc-1]]):
+						nome = input(f'\n Insira o nome do jogador {i+1}\n ~> ')
+						nomeJogador.append(nome)
 			elif opc == 2:
 				print('\n Digite o numero de cartas para cada jogador')
 				print(f' Valor atual : {config[listConfig[opc-1]]}\n')
-				config[listConfig[opc-1]] = int(input(' ~> '))
+
+				aux = int(input(' ~> '))
+
+				nCartasJogo = len(cartas)
+				nCartasNecess = aux * config[listConfig[0]]   # nJogador * nCartas
+
+				if nCartasNecess > nCartasJogo:
+					print('\n Configuracao impossivel !!!')
+				else:
+					config[listConfig[opc-1]] = aux
 			elif opc == 3:
 				print('\n Exibir cartas no inicio da partida? (s / n)')
 				print(f' Valor atual : {config[listConfig[opc-1]]}\n')
@@ -137,7 +158,7 @@ def menuConfiguracao():
 				for k in range(len(configPadrao)):
 					print(f' {listConfig[k]} : {config[listConfig[k]]} -->> {configPadrao[listConfig[k]]}')
 					i += 1
-					aux = input('\n Deseja redefinir todas as configuracoes? ( s / n )\n ~> ')
+				aux = input('\n Deseja redefinir todas as configuracoes? ( s / n )\n ~> ')
 				if aux == 's':
 					nomeJogador = []
 					for i in range(len(configPadrao)):
