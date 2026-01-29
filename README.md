@@ -22,7 +22,8 @@ O jogo possui diversas configuraçõe, entre elas estão:
 5. Força Total: Carta Coringa é a primeira, demais poderes em seguida e cartas de número e letra no final
 
 Deve haver uma letra para cada tipo de organização que pode ser acionada durante a partida sem pular a vez do jogador
-----------------------------------
+
+-------- Trecho acima em produção ------------
 
 ## Como jogar
 1. Execute o arquivo `jogo.py` em um terminal.
@@ -39,10 +40,15 @@ Possui também dez números diferentes sendo eles ->  [0,1,2,3,4,5,6,7,8,9,0]
 O jogo inclui as seguintes cartas:
 
 **Carta de Número e Cor**: Permite ao jogador jogar uma carta com o mesmo número ou cor da carta anterior.
+
 **Carta +2**: Obriga o próximo jogador a comprar 2 cartas e pular a sua vez.
+
 **Carta +4**: Obriga o próximo jogador a comprar 4 cartas e pular a sua vez.
+
 **Carta Inverter Sentido** (><): Inverte o sentido do jogo, de horário para anti-horário ou vice-versa
+
 **Carta Bloqueio** (@): Bloqueia o próximo jogador.
+
 **Carta Coringa** (COR): Pode ser jogada sobre qualquer carta do jogo e permite ao jogador escolher a cor que o próximo jogador deve jogar.
 
 ## Licença
